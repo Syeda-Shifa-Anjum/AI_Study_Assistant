@@ -14,7 +14,7 @@ export default function ChatPanel() {
     setLoading(true)
 
     try {
-      const res = await axios.post("http://127.0.0.1:8000/chat", { question })
+      const res = await axios.post("/chat", { question })
       setMessages(prev => [...prev, { role: "ai", text: res.data.answer }])
     } catch {
       alert("Chat failed!")

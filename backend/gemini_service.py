@@ -9,7 +9,8 @@ BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / ".env")
 load_dotenv(BASE_DIR / "venv" / ".env")
 
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+_api_key = os.getenv("GEMINI_API_KEY")
+client = genai.Client(api_key=_api_key) if _api_key else None
 
 
 def _first_sentences(text: str, count: int = 5) -> list[str]:
@@ -73,6 +74,8 @@ def _local_chat(text: str, question: str) -> str:
 
 
 def _generate_with_fallback(prompt: str, fallback_text: str) -> str:
+    if client is None:
+        return fallback_text
     try:
         response = client.models.generate_content(
             model="gemini-2.0-flash", contents=prompt

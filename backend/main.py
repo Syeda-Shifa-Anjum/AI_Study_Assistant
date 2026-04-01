@@ -1,14 +1,18 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import fitz  # PyMuPDF
+import os
+from pathlib import Path
 from gemini_service import summarize_text, generate_quiz, chat_with_doc
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -57,3 +61,13 @@ async def chat(req: ChatRequest):
         return {"answer": answer}
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+# Serve built frontend static files in production
+_static_dir = Path(__file__).resolve().parent.parent / "frontend" / "dist"
+if _static_dir.exists():
+    app.mount("/assets", StaticFiles(directory=str(_static_dir / "assets")), name="assets")
+
+    @app.get("/{full_path:path}")
+    async def serve_frontend(full_path: str):
+        index = _static_dir / "index.html"
+        return FileResponse(str(index))

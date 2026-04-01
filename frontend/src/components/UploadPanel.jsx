@@ -14,7 +14,7 @@ export default function UploadPanel({ setSummary, setLoading, setDocReady, loadi
     formData.append("file", file)
 
     try {
-      const res = await axios.post("http://127.0.0.1:8000/upload", formData)
+      const res = await axios.post("/upload", formData)
       setSummary(res.data.summary)
       setDocReady(true)
     } catch (err) {
