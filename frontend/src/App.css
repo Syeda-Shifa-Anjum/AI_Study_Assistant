@@ -1,0 +1,52 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #0f0f1a;
+  color: #e0e0e0;
+  min-height: 100vh;
+}
+
+.app {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+header h1 { font-size: 2rem; color: #a78bfa; }
+header p  { color: #888; margin-top: 0.4rem; }
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 8px;
+  background: #1e1e2e;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.tabs button.active,
+.tabs button:hover {
+  background: #a78bfa;
+  color: #fff;
+}
+
+.card {
+  background: #1e1e2e;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
