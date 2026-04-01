@@ -51,13 +51,14 @@ async def get_quiz():
 
 class ChatRequest(BaseModel):
     question: str
+    history: list[dict] | None = None
 
 @app.post("/chat")
 async def chat(req: ChatRequest):
     if not doc_store["text"]:
         raise HTTPException(status_code=400, detail="No document uploaded yet")
     try:
-        answer = chat_with_doc(doc_store["text"], req.question)
+        answer = chat_with_doc(doc_store["text"], req.question, req.history)
         return {"answer": answer}
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc)) from exc

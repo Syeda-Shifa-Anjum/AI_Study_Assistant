@@ -19,26 +19,34 @@ export default function UploadPanel({ setSummary, setLoading, setDocReady, loadi
       setDocReady(true)
     } catch (err) {
       const detail = err?.response?.data?.detail
-      const message = detail || "Upload failed. Make sure the backend is running!"
-      alert(message)
+      alert(detail || "Upload failed. Make sure the backend is running!")
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="card" style={{ marginBottom: "1.5rem", textAlign: "center" }}>
-      <label style={{ cursor: "pointer" }}>
-        <div style={{
-          border: "2px dashed #a78bfa", borderRadius: "10px",
-          padding: "2rem", marginBottom: "1rem"
-        }}>
-          {loading ? "⏳ Analysing your document..." : fileName
-            ? `✅ ${fileName}` : "📂 Click to upload a PDF"}
+    <label style={{ cursor: loading ? "not-allowed" : "pointer" }}>
+      <div className={`upload-zone${loading ? " loading" : ""}`}>
+        <div className="upload-zone-icon">
+          {loading ? "⏳" : fileName ? "✅" : "📂"}
         </div>
-        <input type="file" accept=".pdf" onChange={handleUpload}
-          style={{ display: "none" }} disabled={loading} />
-      </label>
-    </div>
+        <div className="upload-zone-text">
+          {loading
+            ? <><strong>Analysing your document…</strong></>
+            : fileName
+            ? <><strong>{fileName}</strong> — click to upload a different file</>
+            : <><strong>Click to upload a PDF</strong> — your notes, textbook or any document</>
+          }
+        </div>
+      </div>
+      <input
+        type="file"
+        accept=".pdf"
+        onChange={handleUpload}
+        style={{ display: "none" }}
+        disabled={loading}
+      />
+    </label>
   )
 }
