@@ -38,13 +38,13 @@ outputType = "webview"
 name = "Backend API"
 author = "agent"
 
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd backend && venv/bin/python -m uvicorn main:app --host localhost --port 8000"
-waitForPort = 8000
-
 [workflows.workflow.metadata]
 outputType = "console"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd backend && venv/bin/python -m uvicorn main:app --host 0.0.0.0 --port 8000"
+waitForPort = 8000
 
 [[ports]]
 localPort = 5000
